@@ -1,0 +1,1 @@
+psql -U postgres -d ecommerce -a -f ./docker-entrypoint-initdb.d/init.sql;

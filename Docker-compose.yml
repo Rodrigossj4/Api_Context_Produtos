@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: bd_postgres_produtos
+    image: postgres
+    #build: ./db/Dockerfile
+    volumes:
+     - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql 
+     - ./db/init.sh:/docker-entrypoint-initdb.d/init.sh
+    restart: always  
+    environment:
+      POSTGRES_DB: "ecommerce"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_PASSWORD: "123456"
+      POSTGRES_USER: "postgres"
+    ports:
+      - "5434:5432"            
+    networks:
+      - AdminProduto     
+ 
+  api:
+    image: api_context_produto
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always   
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres 
+    networks:
+      - AdminProduto 
+
+networks: 
+  AdminProduto:
+    driver: bridge
+    external: false
+    name: AdminProduto
