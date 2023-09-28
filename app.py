@@ -14,15 +14,15 @@ spec = FlaskPydanticSpec()
 spec.register(app)
 CORS(app)
 
-# conn = psycopg2.connect(database="ecommerce",
-#                        user="postgres",
-#                        password="123456",
-#                        host="localhost", port="5432")
-
 conn = psycopg2.connect(database="ecommerce",
                         user="postgres",
                         password="123456",
-                        host="bd_postgres_produtos")
+                        host="localhost", port="5432")
+
+# conn = psycopg2.connect(database="ecommerce",
+#                        user="postgres",
+#                        password="123456",
+#                        host="bd_postgres_produtos")
 
 
 @app.get('/Secao')
@@ -407,7 +407,8 @@ def MontaPredicadoBuscaSecao(Secao):
 
     if (secao.get("nome", False)):
         if (secao['nome'] != "") and (len(secao['nome']) > 3):
-            predicado += " and nome like '%" + secao['nome'] + "%'"
+            predicado += " and LOWER(nome) like '%" + \
+                str(secao['nome']).lower() + "%'"
 
         if (secao.get("id", False)):
             if (type(int(secao['id']) != int)) and (secao['id'] != 0) and (secao['id'] != ""):
@@ -433,7 +434,8 @@ def MontaPredicadoBuscaProduto(Produto):
 
     if (produto.get("nome", False)):
         if (produto['nome'] != "") and (len(produto['nome']) > 3):
-            predicado += " and nome like '%" + str(produto['nome']) + "%'"
+            predicado += " and LOWER(nome) like '%" + \
+                str(produto['nome']).lower() + "%'"
 
     if (predicado == ""):
         predicado = " and id = 0"
