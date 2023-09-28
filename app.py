@@ -14,15 +14,15 @@ spec = FlaskPydanticSpec()
 spec.register(app)
 CORS(app)
 
-conn = psycopg2.connect(database="ecommerce",
-                        user="postgres",
-                        password="123456",
-                        host="localhost", port="5432")
-
 # conn = psycopg2.connect(database="ecommerce",
 #                        user="postgres",
 #                        password="123456",
-#                        host="bd_postgres_produtos")
+#                        host="localhost", port="5432")
+
+conn = psycopg2.connect(database="ecommerce",
+                        user="postgres",
+                        password="123456",
+                        host="bd_postgres_produtos")
 
 
 @app.get('/Secao')
